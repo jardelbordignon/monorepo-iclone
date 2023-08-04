@@ -1,0 +1,20 @@
+{
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.insertFinalNewline": true,
+    "source.formatDocument": true,
+    "source.fixAll.eslint": true
+  },
+  "files.autoSave": "onFocusChange",
+  "material-icon-theme.activeIconPack": "react",
+  "material-icon-theme.files.associations": {},
+  "material-icon-theme.folders.associations": {
+    "account": "Secure",
+    "back": "Api",
+    "conn": "Connection",
+    "native": "Mobile",
+    "front": "Client",
+  }
+}

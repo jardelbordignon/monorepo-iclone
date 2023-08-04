@@ -3,20 +3,24 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "api": "turbo run api",
+    "android": "turbo run android",
+    "ios": "turbo run ios",
+    "web": "turbo run web",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "prettier-eslint": "*",
     "@turbo/gen": "^1.9.7",
-    "eslint": "^7.32.0",
-    "eslint-config-custom": "*",
-    "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "^1.10.9"
   },
   "name": "turbo-demo",
   "packageManager": "yarn@1.22.19",
   "workspaces": [
-    "apps/*",
+    "apps/api",
+    "apps/native",
+    "apps/web",
     "packages/*"
   ]
 }
