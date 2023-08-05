@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import { TCreateUserInput } from 'contracts/account'
 
-import { accountConn } from 'front/conn/account'
+import { accountApi } from 'front/api/account'
 import { ZodType, useForm } from 'front/hooks/use-form'
 import { useLocales } from 'front/hooks/use-locales'
 import { Link, isWeb, useNavigate } from 'front/router'
@@ -22,7 +22,7 @@ export function SignUp(): JSX.Element {
 
   const submit = handleSubmit(async data => {
     try {
-      await accountConn.createUser(data)
+      await accountApi.createUser(data)
       navTo('/login')
     } catch (err) {
       console.log(err)

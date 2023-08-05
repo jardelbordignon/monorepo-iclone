@@ -1,12 +1,14 @@
 {
   "private": true,
   "scripts": {
+    "api": "cd apps/api && yarn dev",
+    "android": "cd apps/native && yarn android",
+    "ios": "cd apps/native && yarn ios",
+    "native": "cd apps/native && yarn start",
+    "native:rc": "cd apps/native && yarn start --reset-cache",
+    "web": "cd apps/web && yarn dev",
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "api": "turbo run api",
-    "android": "turbo run android",
-    "ios": "turbo run ios",
-    "web": "turbo run web",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

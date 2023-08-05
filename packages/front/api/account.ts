@@ -8,7 +8,7 @@ import {
 
 import { api } from './core'
 
-class AccountConn {
+class AccountApi {
   // Auth
   public login(body: TLoginInput) {
     return api.post<TLoginResponse>('/auth', body)
@@ -28,4 +28,4 @@ class AccountConn {
   }
 }
 
-export const accountConn = new AccountConn()
+export const accountApi = new AccountApi()

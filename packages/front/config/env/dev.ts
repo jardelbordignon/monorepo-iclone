@@ -1,5 +1,8 @@
+// ipconfig #window
+// networksetup -getinfo Wi-Fi #mac
+
 export const env = {
-  baseUrl: 'http://127.0.0.1:3001',
+  baseUrl: 'http://192.168.0.100:3001',
   debugMode: true,
   name: 'development',
   useMocks: false,

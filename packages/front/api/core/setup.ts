@@ -13,6 +13,7 @@ class AuthTokenError extends Error {
 }
 
 export function setupApi(baseURL: string, debugMode: boolean) {
+  if (debugMode) console.log('baseURL: ', baseURL)
   const authLoginResponse = storage.get('authLoginResponse')
 
   const api = axios.create({ baseURL })

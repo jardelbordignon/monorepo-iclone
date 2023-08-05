@@ -3,7 +3,6 @@ import { AxiosError, AxiosProgressEvent, Method } from 'axios'
 import { env } from 'front/config/env'
 
 import { ApiError } from './error'
-import { mockedApi } from './mocks'
 import { setupApi } from './setup'
 
 class Api {
@@ -44,18 +43,16 @@ class Api {
     try {
       onProgress && onProgress(0)
 
-      const request = env.useMocks
-        ? mockedApi(method, endpoint, data)
-        : setupApi(env.baseUrl, env.debugMode).request({
-            data: ['POST', 'PUT', 'PATCH'].includes(method) ? data : null,
-            method,
-            onUploadProgress: (progress: AxiosProgressEvent) => {
-              if (onProgress && progress.total)
-                onProgress((progress.loaded / progress.total) * 100)
-            },
-            params: method === 'GET' ? data : null,
-            url: endpoint,
-          })
+      const request = setupApi(env.baseUrl, env.debugMode).request({
+        data: ['POST', 'PUT', 'PATCH'].includes(method) ? data : null,
+        method,
+        onUploadProgress: (progress: AxiosProgressEvent) => {
+          if (onProgress && progress.total)
+            onProgress((progress.loaded / progress.total) * 100)
+        },
+        params: method === 'GET' ? data : null,
+        url: endpoint,
+      })
 
       const response = await request
       onProgress && onProgress(100)

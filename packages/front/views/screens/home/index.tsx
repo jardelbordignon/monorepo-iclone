@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 
 import { TGetUsersResponse } from 'contracts/account'
 
-import { accountConn } from 'front/conn/account'
+import { accountApi } from 'front/api/account'
 import { Link, isWeb } from 'front/router'
 import { Translate } from 'front/views/animations'
 
@@ -12,7 +12,7 @@ export const Home = (): JSX.Element => {
 
   const loadUsers = async () => {
     try {
-      const res = await accountConn.getUsers()
+      const res = await accountApi.getUsers()
 
       setUsers(res)
 
