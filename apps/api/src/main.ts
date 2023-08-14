@@ -49,7 +49,7 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap')
 
   app
-    .listen(process.env.PORT || 3001)
+    .listen(process.env.PORT || 3001, '192.168.0.102')
     .then(async () => logger.log(`🚀 Running on: ${await app.getUrl()}`))
     .catch(err => logger.log(`❌ Error: ${err}`))
 }
