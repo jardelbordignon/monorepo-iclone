@@ -48,7 +48,7 @@ export const createMirageServer = (environment = 'development') => {
     },
 
     routes() {
-      this.urlPrefix = 'http://127.0.0.1:3001'
+      this.urlPrefix = 'http://mirage.api'
       this.namespace = 'v1'
       this.timing = 700
 
