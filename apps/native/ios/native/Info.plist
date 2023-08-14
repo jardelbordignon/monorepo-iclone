@@ -25,7 +25,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.demo.mobile</string>
+          <string>com.demo.native</string>
         </array>
       </dict>
     </array>

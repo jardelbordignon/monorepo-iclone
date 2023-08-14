@@ -1,4 +1,4 @@
-package com.demo.mobile;
+package com.demo.native;
 
 import android.app.Application;
 import android.content.res.Configuration;
