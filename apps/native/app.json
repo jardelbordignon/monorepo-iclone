@@ -13,8 +13,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.demo.mobile"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +24,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": ["expo-build-properties"]
+    }
   }
 }
