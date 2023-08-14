@@ -1,14 +1,36 @@
+type GetItemOpts = {
+  checkExpiryDate?: boolean
+  deleteExpired?: boolean
+}
+
 class Storage {
-  public get<T = any>(key: string): T {
+  public getItem<T = any>(key: string, opts?: GetItemOpts): T {
     const data = window.localStorage.getItem(key)
-    return data ? JSON.parse(data) : null
+    if (!data) return null
+    const parsedData = JSON.parse(data)
+    if (
+      opts?.checkExpiryDate &&
+      parsedData.expiry &&
+      parsedData.expiry < Date.now()
+    ) {
+      if (opts.deleteExpired) window.localStorage.removeItem(key)
+      return null
+    }
+    return parsedData.value
   }
 
-  public set(k: string, v: any) {
-    window.localStorage.setItem(k, JSON.stringify(v))
+  public setItem(key: string, value: any, ttlMinutes = 0) {
+    let data: unknown = { value }
+    if (ttlMinutes) {
+      data = {
+        expiry: Date.now() + ttlMinutes * 1000 * 60,
+        value,
+      }
+    }
+    window.localStorage.setItem(key, JSON.stringify(data))
   }
 
-  public del(k: string) {
+  public removeItem(k: string) {
     window.localStorage.removeItem(k)
   }
 }

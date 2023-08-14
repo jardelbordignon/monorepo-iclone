@@ -1,9 +1,12 @@
-// ipconfig #window
-// networksetup -getinfo Wi-Fi #mac
+import constants from './constants'
+import { EnvType } from './type'
 
-export const env = {
-  baseUrl: 'http://192.168.0.100:3001',
-  debugMode: true,
+const useMirage = false
+
+export default {
+  apiUrl: useMirage ? 'http://127.0.0.1:3001/v1' : constants.apiDevUrl,
+  enableDebug: true,
   name: 'development',
+  useMirage,
   useMocks: false,
-}
+} as EnvType

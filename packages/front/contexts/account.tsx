@@ -1,40 +1,41 @@
-import { TCreateUserResponse, TRefreshTokenResponse } from "contracts/account";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react"
+
+import { TRefreshTokenResponse, TUserEntity } from "contracts/account"
 
 type AccountContextProps = {
   canPrivateRoutes: boolean;
   setCanPrivateRoutes(canPrivateRoutes: boolean): void;
-  user: TCreateUserResponse;
-  setUser(user: TCreateUserResponse): void;
-  tokens: TRefreshTokenResponse;
   setTokens(tokens: TRefreshTokenResponse): void;
+  setUser(user: TUserEntity): void;
+  tokens: TRefreshTokenResponse;
+  user: TUserEntity;
 };
 
 type AccountProviderProps = {
   children: ReactNode;
 };
 
-const AccountContext = createContext({} as AccountContextProps);
+const AccountContext = createContext({} as AccountContextProps)
 
 export const AccountProvider = ({ children }: AccountProviderProps) => {
-  const [canPrivateRoutes, setCanPrivateRoutes] = useState(false);
-  const [user, setUser] = useState<TCreateUserResponse>();
-  const [tokens, setTokens] = useState<TRefreshTokenResponse>();
+  const [canPrivateRoutes, setCanPrivateRoutes] = useState(false)
+  const [user, setUser] = useState<TUserEntity>()
+  const [tokens, setTokens] = useState<TRefreshTokenResponse>()
 
   return (
     <AccountContext.Provider
       value={{
         canPrivateRoutes,
         setCanPrivateRoutes,
-        user,
+        setTokens,
         setUser,
         tokens,
-        setTokens,
+        user,
       }}
     >
       {children}
     </AccountContext.Provider>
-  );
-};
+  )
+}
 
-export const useAccountContext = () => useContext(AccountContext);
+export const useAccountContext = () => useContext(AccountContext)

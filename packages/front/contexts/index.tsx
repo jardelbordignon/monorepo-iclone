@@ -1,16 +1,22 @@
-import type { ReactNode } from "react";
+import { Suspense } from 'react'
+import type { ReactNode } from 'react'
 
-import { AccountProvider } from "./account";
-import { LocalesProvider } from "./locales";
+import { AccountProvider } from './account'
+import { LocalesProvider } from './locales'
+import { ReactQueryProvider } from './react-query'
 
 type Props = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
-export function Contexts({ children, ...rest }: Props) {
+export function Contexts({ children }: Props) {
   return (
-    <LocalesProvider>
-      <AccountProvider>{children}</AccountProvider>
-    </LocalesProvider>
-  );
+    <Suspense fallback={null}>
+      <LocalesProvider>
+        <AccountProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </AccountProvider>
+      </LocalesProvider>
+    </Suspense>
+  )
 }

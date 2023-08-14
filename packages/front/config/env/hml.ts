@@ -1,6 +1,8 @@
-export const env = {
-  baseUrl: '',
-  debugMode: true,
+import constants from './constants'
+import { EnvType } from './type'
+
+export default {
+  apiUrl: constants.apiHmlUrl,
+  enableDebug: true,
   name: 'homolog',
-  useMocks: false,
-}
+} as EnvType

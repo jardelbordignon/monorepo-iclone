@@ -25,11 +25,11 @@ export const LocalesProvider = ({ children }: ProviderProps) => {
   const setLocaleName = (localeName: LocaleName) => {
     setErrorMap(zodErrorMaps[localeName])
     _setLocaleName(localeName)
-    storage.set('localeName', localeName)
+    storage.setItem('localeName', localeName)
   }
 
   const handleLocale = useCallback(() => {
-    const storedLocaleName = storage.get('localeName')
+    const storedLocaleName = storage.getItem('localeName')
 
     if (storedLocaleName && localeNames.includes(storedLocaleName)) {
       setLocaleName(storedLocaleName)

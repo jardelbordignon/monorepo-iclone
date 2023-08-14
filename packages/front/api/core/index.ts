@@ -4,7 +4,7 @@ import { env } from 'front/config/env'
 
 import { ApiError } from './error'
 import { setupApi } from './setup'
-
+import { mockedApi } from '../dev/mocks'
 class Api {
   public delete<T = any>(endpoint: string, params?: any): Promise<T> {
     return this.request<T>('DELETE', endpoint, params)
@@ -27,11 +27,11 @@ class Api {
   }
 
   public upload<T = any>(
-    url: string,
+    endpoint: string,
     data: FormData,
     onProgress: (progress: number) => void
   ): Promise<T> {
-    return this.request<T>('POST', url, data, onProgress)
+    return this.request<T>('POST', endpoint, data, onProgress)
   }
 
   private async request<T = any>(
@@ -43,16 +43,18 @@ class Api {
     try {
       onProgress && onProgress(0)
 
-      const request = setupApi(env.baseUrl, env.debugMode).request({
-        data: ['POST', 'PUT', 'PATCH'].includes(method) ? data : null,
-        method,
-        onUploadProgress: (progress: AxiosProgressEvent) => {
-          if (onProgress && progress.total)
-            onProgress((progress.loaded / progress.total) * 100)
-        },
-        params: method === 'GET' ? data : null,
-        url: endpoint,
-      })
+      const request = env.useMocks
+        ? mockedApi(method, endpoint, data)
+        : setupApi(env.apiUrl, env.enableDebug).request({
+            data: ['POST', 'PUT', 'PATCH'].includes(method) ? data : null,
+            method,
+            onUploadProgress: (progress: AxiosProgressEvent) => {
+              if (onProgress && progress.total)
+                onProgress((progress.loaded / progress.total) * 100)
+            },
+            params: method === 'GET' ? data : null,
+            url: endpoint,
+          })
 
       const response = await request
       onProgress && onProgress(100)
@@ -64,7 +66,7 @@ class Api {
   }
 
   private async handleError<T>(err: AxiosError): Promise<T> {
-    //if (env.debugMode) console.log('api handleError', JSON.stringify(err, null, 2))
+    if (env.enableDebug) console.log('api handleError', JSON.stringify(err, null, 2))
     if (!err) return
     if (!err.config || !err.response) throw err
     throw new ApiError(err.config, err.response, err)

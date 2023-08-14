@@ -1,48 +1,36 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { StyleSheet, Text, View } from 'react-native'
-
-import { TGetUsersResponse } from 'contracts/account'
 
 import { accountApi } from 'front/api/account'
 import { Link, isWeb } from 'front/router'
 import { Translate } from 'front/views/animations'
 
+// const fetchUsers = (): Promise<{ data: any }> =>
+//  fetch('http://127.0.0.1:3001/v1/users').then(res => res.json())
+
 export const Home = (): JSX.Element => {
-  const [users, setUsers] = useState<TGetUsersResponse>()
-
-  const loadUsers = async () => {
-    try {
-      const res = await accountApi.getUsers()
-
-      setUsers(res)
-
-      console.log(res)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    if (!users) loadUsers()
-  }, [])
+  const { data, isSuccess } = useQuery({
+    queryFn: accountApi.getUsers,
+    queryKey: ['users'],
+  })
 
   return (
     <Translate isWeb={isWeb}>
       <View style={s.container}>
-        {users &&
-          users.map(user => (
-            <Text key={user.id} style={{ color: '#fff' }}>
-              {user.email}
-            </Text>
-          ))}
-
-        <Text style={s.text}>Home Test</Text>
+        <Text style={s.text}>Home {isSuccess ? data.length : 'error'}</Text>
         <Link to="/about">
           <Text style={s.link}>About</Text>
         </Link>
         <Link to="/sign-in">
           <Text style={s.link}>Sign In</Text>
         </Link>
+
+        {isSuccess &&
+          data.map(user => (
+            <Text key={user.id} style={{ color: '#fff' }}>
+              {user.email}
+            </Text>
+          ))}
       </View>
     </Translate>
   )

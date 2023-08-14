@@ -3,12 +3,13 @@
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react-native",
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "esnext"],
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "ESNext",
+    "module": "esnext",
+    "target": "esnext",
     "baseUrl": ".",
     "paths": {
       "front/*": ["./*"]
