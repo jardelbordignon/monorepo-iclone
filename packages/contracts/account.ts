@@ -6,7 +6,7 @@ export type TLoginInput = {
 
 export type TLoginResponse = {
   tokens: TRefreshTokenResponse
-  user: TCreateUserResponse
+  user: TUserEntity
 }
 
 export type TRefreshTokenResponse = {
@@ -21,7 +21,9 @@ export type TCreateUserInput = {
   password: string
 }
 
-export type TCreateUserResponse = {
+export type TUserEntity = {
+  app_install_id?: string
+  last_mfa_confirmation?: string
   created_at: string
   email: string
   id: string
@@ -31,4 +33,4 @@ export type TCreateUserResponse = {
   updated_at: string
 }
 
-export type TGetUsersResponse = TCreateUserResponse[]
+export type TGetUsersResponse = TUserEntity[]
