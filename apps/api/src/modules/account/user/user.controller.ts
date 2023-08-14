@@ -22,7 +22,7 @@ import {
 import { UserService } from './user.service'
 
 @ApiTags('Account - User')
-@Controller('users')
+@Controller('v1/users')
 export class UserController {
   constructor(private readonly service: UserService) {}
 
