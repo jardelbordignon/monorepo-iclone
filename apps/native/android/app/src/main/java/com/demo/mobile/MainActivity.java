@@ -1,4 +1,4 @@
-package com.demo.native;
+package com.demo.mobile;
 
 import android.os.Build;
 import android.os.Bundle;
