@@ -1,15 +1,14 @@
 import type { ReactNode } from 'react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Animated } from 'react-native'
+
+import { isWeb } from 'front/router'
 
 type Props = {
   children: ReactNode
   duration?: number
-  enableAnimation?: boolean
   fromX?: number
   fromY?: number
-  isWeb: boolean
-  onEndAnimation?: () => void
   toX?: number
   toY?: number
 }
@@ -17,19 +16,18 @@ type Props = {
 export function Translate({
   children,
   duration = 1000,
-  enableAnimation = true,
   fromX,
   fromY = 50,
-  isWeb,
-  onEndAnimation,
   toX = 0,
   toY = 0,
 }: Props): JSX.Element {
-  if (!enableAnimation) return <>{children}</>
+  const [animationApplied, setAnimationApplied] = useState(false)
 
-  if (onEndAnimation) {
-    setTimeout(onEndAnimation, duration)
-  }
+  useEffect(() => {
+    setTimeout(() => setAnimationApplied(true), duration)
+  }, [])
+
+  if (animationApplied) return <>{children}</>
 
   const id = Math.floor(Math.random() * 100000)
   fromX = fromX ?? id % 2 ? 50 : -50

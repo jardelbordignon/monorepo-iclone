@@ -1,31 +1,29 @@
 import type { ReactNode } from 'react'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Animated } from 'react-native'
+
+import { isWeb } from 'front/router'
 
 type Props = {
   children: ReactNode
   duration?: number
-  enableAnimation?: boolean
   from?: number
-  isWeb: boolean
-  onEndAnimation?: () => void
   to?: number
 }
 
 export function Fade({
   children,
   duration = 1200,
-  enableAnimation = true,
   from = 0,
-  isWeb,
-  onEndAnimation,
   to = 1,
 }: Props): JSX.Element {
-  if (!enableAnimation) return <>{children}</>
+  const [animationApplied, setAnimationApplied] = useState(false)
 
-  if (onEndAnimation) {
-    setTimeout(onEndAnimation, duration)
-  }
+  useEffect(() => {
+    setTimeout(() => setAnimationApplied(true), duration)
+  }, [])
+
+  if (animationApplied) return <>{children}</>
 
   if (isWeb) {
     const id = Math.floor(Math.random() * 100000)
