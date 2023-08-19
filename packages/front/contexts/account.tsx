@@ -1,19 +1,19 @@
-import { ReactNode, createContext, useContext, useState } from "react"
+import { ReactNode, createContext, useContext, useState } from 'react'
 
-import { TRefreshTokenResponse, TUserEntity } from "contracts/account"
+import { TRefreshTokenResponse, TUserEntity } from 'contracts/account'
 
 type AccountContextProps = {
-  canPrivateRoutes: boolean;
-  setCanPrivateRoutes(canPrivateRoutes: boolean): void;
-  setTokens(tokens: TRefreshTokenResponse): void;
-  setUser(user: TUserEntity): void;
-  tokens: TRefreshTokenResponse;
-  user: TUserEntity;
-};
+  canPrivateRoutes: boolean
+  setCanPrivateRoutes(canPrivateRoutes: boolean): void
+  setTokens(tokens: TRefreshTokenResponse): void
+  setUser(user: TUserEntity): void
+  tokens: TRefreshTokenResponse
+  user: TUserEntity
+}
 
 type AccountProviderProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 const AccountContext = createContext({} as AccountContextProps)
 
@@ -31,8 +31,7 @@ export const AccountProvider = ({ children }: AccountProviderProps) => {
         setUser,
         tokens,
         user,
-      }}
-    >
+      }}>
       {children}
     </AccountContext.Provider>
   )

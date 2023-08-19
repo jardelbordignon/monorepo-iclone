@@ -3,9 +3,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import { TLoginInput } from 'contracts/account'
 
 import { accountApi } from 'front/api/account'
+import { Fade } from 'front/views/animations'
 import { ZodType, useForm } from 'front/hooks/use-form'
 import { useLocales } from 'front/hooks/use-locales'
-import { Link, isWeb, useNavigate } from 'front/router'
+import { Link, useNavigate } from 'front/router'
+import { themes } from 'front/themes'
 
 export function SignIn(): JSX.Element {
   const { t } = useLocales()
@@ -29,23 +31,23 @@ export function SignIn(): JSX.Element {
   })
 
   return (
-    <View style={s.container}>
-      <Text style={s.text}>{t('mAccessYourAccount')}</Text>
-      <Link to="/sign-up">
-        <Text style={s.link}>{t('mSignUp')}</Text>
-      </Link>
-    </View>
+    <Fade>
+      <View style={s.container}>
+        <Text style={s.text}>{t('mAccessYourAccount')}</Text>
+        <Link to="/sign-up">
+          <Text style={s.link}>{t('mSignUp')}</Text>
+        </Link>
+      </View>
+    </Fade>
   )
 }
 
 const s = StyleSheet.create({
   container: {
+    ...themes.styles.fullScreen,
     alignItems: 'center',
     backgroundColor: '#111',
-    flex: 1,
-    height: isWeb ? '100vh' : undefined,
     justifyContent: 'center',
-    width: isWeb ? '100vw' : undefined,
   },
   link: {
     color: 'blue',

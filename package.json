@@ -20,7 +20,9 @@
   "name": "turbo-demo",
   "packageManager": "yarn@1.22.19",
   "workspaces": [
-    "apps/*",
+    "apps/api",
+    "apps/native",
+    "apps/web",
     "packages/*"
   ]
 }

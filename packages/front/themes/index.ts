@@ -1,3 +1,5 @@
+import { isWeb } from 'front/router'
+
 const commonColors = {
   'account-gradient': ['#181C9000', '#181C901A', '#000000E6'],
   shadow: '#272CE5',
@@ -22,7 +24,14 @@ const light = {
   ...commonColors,
 }
 
-module.exports = {
+export const themes = {
+  styles: {
+    fullScreen: {
+      flex: 1,
+      height: isWeb ? ('100vh' as never) : undefined,
+      width: isWeb ? ('100vw' as never) : undefined,
+    },
+  },
   colors: {
     light,
   },
