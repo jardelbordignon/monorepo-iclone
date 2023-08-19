@@ -2,6 +2,7 @@ import { About } from 'front/views/screens/about'
 import { SignIn } from 'front/views/screens/account/sign-in'
 import { SignUp } from 'front/views/screens/account/sign-up'
 import { Home } from 'front/views/screens/home'
+import { UserList } from 'front/views/screens/user/list'
 
 import { Route, Router, Routes } from '.'
 
@@ -13,6 +14,7 @@ export default function () {
         <Route path="/about" element={<About />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/users" element={<UserList />} />
       </Routes>
     </Router>
   )

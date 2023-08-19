@@ -1,49 +1,31 @@
-import { useQuery } from '@tanstack/react-query'
 import { StyleSheet, Text, View } from 'react-native'
 
-import { accountApi } from 'front/api/account'
 import { Link, isWeb } from 'front/router'
-import { Translate } from 'front/views/animations'
-
-// const fetchUsers = (): Promise<{ data: any }> =>
-//  fetch('http://127.0.0.1:3001/v1/users').then(res => res.json())
+import { Fade } from 'front/views/animations'
+import Gremio from 'front/assets/gremio.svg'
+import { themes } from 'front/themes'
 
 export const Home = (): JSX.Element => {
-  const { data, isSuccess } = useQuery({
-    queryFn: accountApi.getUsers,
-    queryKey: ['users'],
-  })
+  if (isWeb) document.title = 'Home page'
 
   return (
-    <Translate isWeb={isWeb}>
+    <Fade>
       <View style={s.container}>
-        <Text style={s.text}>Home {isSuccess ? data.length : 'error'}</Text>
-        <Link to="/about">
-          <Text style={s.link}>About</Text>
+        <Gremio width={200} height={200} />
+        <Link to="/users">
+          <Text style={s.link}>Users</Text>
         </Link>
-        <Link to="/sign-in">
-          <Text style={s.link}>Sign In</Text>
-        </Link>
-
-        {isSuccess &&
-          data.map(user => (
-            <Text key={user.id} style={{ color: '#fff' }}>
-              {user.email}
-            </Text>
-          ))}
       </View>
-    </Translate>
+    </Fade>
   )
 }
 
 const s = StyleSheet.create({
   container: {
+    ...themes.styles.fullScreen,
     alignItems: 'center',
     backgroundColor: '#111',
-    flex: 1,
-    height: isWeb ? '100vh' : undefined,
     justifyContent: 'center',
-    width: isWeb ? '100vw' : undefined,
   },
   link: {
     color: 'blue',

@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Patch,
   Post,
+  Query,
   Request,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
@@ -20,19 +21,29 @@ import {
   type UserOmittedPassword,
 } from './user.dto'
 import { UserService } from './user.service'
+import { TGetUsersParams, TGetUsersResponse } from 'contracts/account'
 
 @ApiTags('Account - User')
 @Controller('v1/users')
 export class UserController {
   constructor(private readonly service: UserService) {}
 
-  @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ description: 'A list of user whit omitted password' })
+  // @ApiOperation({ summary: 'Get all users' })
+  // @ApiResponse({ description: 'A list of user whit omitted password' })
+  // @HttpCode(HttpStatus.OK)
+  // @AllowUnauthenticated()
+  // @Get()
+  // findAll(): Promise<UserOmittedPassword[]> {
+  //   return this.service.findAll()
+  // }
+
+  @ApiOperation({ summary: 'Get paginated users' })
+  @ApiResponse({ description: 'A paginated list of user' })
   @HttpCode(HttpStatus.OK)
   @AllowUnauthenticated()
   @Get()
-  findAll(): Promise<UserOmittedPassword[]> {
-    return this.service.findAll()
+  findMany(@Query() query: TGetUsersParams): Promise<TGetUsersResponse> {
+    return this.service.findMany(query)
   }
 
   @ApiOperation({ summary: 'Create an user' })

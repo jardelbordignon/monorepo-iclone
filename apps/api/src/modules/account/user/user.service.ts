@@ -2,6 +2,8 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { User } from '@prisma/client'
 import { compare, hash } from 'bcryptjs'
 
+import { TGetUsersParams, TGetUsersResponse } from 'contracts/account'
+
 import { PrismaService } from 'src/infra/prisma.service'
 import { omitProperties } from 'src/infra/utils/omit-properties'
 
@@ -32,6 +34,24 @@ export class UserService extends PrismaService {
     const users = await this.user.findMany()
     const usersOmittedPassword = users.map(user => omitProperties(user, ['password']))
     return usersOmittedPassword
+  }
+
+  // https://www.prisma.io/docs/concepts/components/prisma-client/pagination
+  async findMany({ page, perPage }: TGetUsersParams): Promise<TGetUsersResponse> {
+    if (!page || page < 1) page = 1
+    if (!perPage || perPage < 1) perPage = 10
+
+    const users = await this.user.findMany({
+      skip: (page - 1) * perPage,
+      take: +perPage,
+      orderBy: {
+        created_at: 'desc',
+      },
+    })
+
+    const totalCount = await this.user.count()
+
+    return { users, totalCount }
   }
 
   private async findFirst(field: string, value: any): Promise<UserOmittedPassword> {

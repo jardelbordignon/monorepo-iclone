@@ -1,4 +1,4 @@
-import { IStorageProvider } from './i-storage-provider'
+import { IStorageProvider } from '../i-storage-provider'
 
 export class FakeStorageProvider implements IStorageProvider {
   private storage: string[] = []

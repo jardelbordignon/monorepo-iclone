@@ -24,13 +24,21 @@ export type TCreateUserInput = {
 export type TUserEntity = {
   app_install_id?: string
   last_mfa_confirmation?: string
-  created_at: string
+  created_at: Date
   email: string
   id: string
   name: string
   permissions: string[]
   roles: string[]
-  updated_at: string
+  updated_at: Date
 }
 
-export type TGetUsersResponse = TUserEntity[]
+export type TGetUsersParams = {
+  page: number
+  perPage?: number
+}
+
+export type TGetUsersResponse = {
+  users: TUserEntity[]
+  totalCount: number
+}

@@ -1,37 +1,34 @@
-type GetItemOpts = {
-  checkExpiryDate?: boolean
-  deleteExpired?: boolean
-}
-
 class Storage {
-  public getItem<T = any>(key: string, opts?: GetItemOpts): T {
-    const data = window.localStorage.getItem(key)
-    if (!data) return null
+  public getItem<T = any>(key: string): T {
+    const data = localStorage.getItem(key)
+    if (!data) return null as T
     const parsedData = JSON.parse(data)
-    if (
-      opts?.checkExpiryDate &&
-      parsedData.expiry &&
-      parsedData.expiry < Date.now()
-    ) {
-      if (opts.deleteExpired) window.localStorage.removeItem(key)
-      return null
+    if (parsedData.expiry && parsedData.expiry < Date.now()) {
+      localStorage.removeItem(key)
+      return null as T
     }
     return parsedData.value
   }
 
-  public setItem(key: string, value: any, ttlMinutes = 0) {
+  public setItem(key: string, value: unknown, expiresIn = 0) {
     let data: unknown = { value }
-    if (ttlMinutes) {
+    if (expiresIn) {
       data = {
-        expiry: Date.now() + ttlMinutes * 1000 * 60,
+        expiry: Date.now() + expiresIn,
         value,
       }
     }
-    window.localStorage.setItem(key, JSON.stringify(data))
+    localStorage.setItem(key, JSON.stringify(data))
   }
 
-  public removeItem(k: string) {
-    window.localStorage.removeItem(k)
+  public removeItem(key: string) {
+    localStorage.removeItem(key)
+  }
+
+  public removeAllThatStartWith(key: string) {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith(key)) localStorage.removeItem(k)
+    })
   }
 }
 

@@ -1,11 +1,11 @@
 import {
   TCreateUserInput,
+  TGetUsersParams,
+  TGetUsersResponse,
   TLoginInput,
   TLoginResponse,
   TUserEntity,
 } from 'contracts/account'
-
-//import { storage } from 'front/utils/storage'
 
 import { api } from './core'
 
@@ -20,18 +20,8 @@ class AccountApi {
   }
 
   // User
-  //public async getUsers() {
-  //  let users = storage.getItem('users', true)
-  //  if (!users) {
-  //    users = await api.get<TUserEntity[]>('/users')
-  //    storage.setItem('users', users, 1)
-  //  }
-  //  return users
-  //}
-  public async getUsers() {
-    const users = await api.get<TUserEntity[]>('/users')
-    console.log('users', users)
-    return users
+  public getUsers(params: TGetUsersParams) {
+    return api.get<TGetUsersResponse>('/users', params)
   }
 
   public createUser(body: TCreateUserInput) {

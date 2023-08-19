@@ -2,32 +2,23 @@ import { MMKV } from 'react-native-mmkv'
 
 const mmkv = new MMKV()
 
-type GetItemOpts = {
-  checkExpiryDate?: boolean
-  deleteExpired?: boolean
-}
-
 class Storage {
-  public getItem<T = any>(key: string, opts?: GetItemOpts): T {
+  public getItem<T = any>(key: string): T {
     const data = mmkv.getString(key)
-    if (!data) return null
+    if (!data) return null as T
     const parsedData = JSON.parse(data)
-    if (
-      opts?.checkExpiryDate &&
-      parsedData.expiry &&
-      parsedData.expiry < Date.now()
-    ) {
-      if (opts.deleteExpired) mmkv.delete(key)
-      return null
+    if (parsedData.expiry && parsedData.expiry < Date.now()) {
+      mmkv.delete(key)
+      return null as T
     }
     return parsedData.value
   }
 
-  public setItem(key: string, value: any, ttlMinutes = 0) {
+  public setItem(key: string, value: unknown, expiresIn = 0) {
     let data: unknown = { value }
-    if (ttlMinutes) {
+    if (expiresIn) {
       data = {
-        expiry: Date.now() + ttlMinutes * 1000 * 60,
+        expiry: Date.now() + expiresIn,
         value,
       }
     }
@@ -36,6 +27,12 @@ class Storage {
 
   public removeItem(key: string) {
     mmkv.delete(key)
+  }
+
+  public removeAllThatStartWith(key: string) {
+    mmkv.getAllKeys().forEach(k => {
+      if (k.startsWith(key)) mmkv.delete(k)
+    })
   }
 }
 

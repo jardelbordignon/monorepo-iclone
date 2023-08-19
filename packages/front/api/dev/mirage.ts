@@ -1,6 +1,12 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { fakerPT_BR as faker } from '@faker-js/faker'
-import { Factory, Model, createServer } from 'miragejs'
+import {
+  Factory,
+  Model,
+  createServer,
+  Response,
+  ActiveModelSerializer,
+} from 'miragejs'
 
 import { TUserEntity } from 'contracts/account'
 
@@ -10,6 +16,10 @@ export const createMirageServer = (environment = 'development') => {
   const server = createServer({
     environment,
 
+    serializers: {
+      application: ActiveModelSerializer,
+    },
+
     models: {
       user: Model.extend<Partial<TUserEntity>>({}),
     },
@@ -17,7 +27,7 @@ export const createMirageServer = (environment = 'development') => {
     factories: {
       user: Factory.extend<Partial<TUserEntity>>({
         created_at() {
-          return faker.date.recent({ days: 100, refDate: 21 }).toString()
+          return faker.date.recent({ days: 100, refDate: 21 })
         },
         email() {
           return faker.internet.email().toLowerCase()
@@ -38,13 +48,13 @@ export const createMirageServer = (environment = 'development') => {
           return faker.helpers.arrayElements(['ADMIN', 'MANAGER', 'USER'])
         },
         updated_at() {
-          return faker.date.recent({ days: 20 }).toString()
+          return faker.date.recent({ days: 20 })
         },
       }),
     },
 
     seeds(server) {
-      server.createList('user', 100)
+      server.createList('user', 200)
     },
 
     routes() {
@@ -53,11 +63,33 @@ export const createMirageServer = (environment = 'development') => {
       this.timing = 700
 
       //this.get('/users')
-      this.get('/users', schema => {
+      this.get('/users', (schema, request) => {
         //console.log('schema', schema)
         //return schema.all('user')
-        return schema.all('user').models
+        //return schema.all('user').models
+
+        const { page = 1, per_page = 10 } = request.queryParams
+
+        const totalCount = schema.all('user').length
+
+        const pageStart = (+page - 1) * +per_page
+        const pageEnd = pageStart + +per_page
+
+        const users = schema
+          .all('user')
+          .models.sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          )
+          .slice(pageStart, pageEnd)
+
+        return new Response(
+          200,
+          { 'x-total-count': totalCount.toString() },
+          { users, totalCount }
+        )
       })
+      this.get('/users/:id')
       this.post('/users')
     },
   })
