@@ -11,7 +11,7 @@ import {
 import MaskInput, { MaskInputProps, Masks } from 'react-native-mask-input'
 //import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import themes from 'front/theme'
+import { themes } from 'front/themes'
 
 export type TextInputProps = Omit<MaskInputProps, 'mask'> & {
   error?: string
@@ -89,13 +89,13 @@ const TextInputBase = (
     marginLeft: ml ?? undefined,
     marginRight: mr ?? undefined,
     marginTop: mt ?? undefined,
-    width: narrow ? undefined : '100%',
+    width: narrow ? undefined : ('100%' as any),
   }
 
   return (
     <View style={wrapperStyle}>
       {label && (
-        <Text>
+        <Text style={styles.label}>
           {label}
           {isRequired && <Text>*</Text>}
         </Text>
@@ -103,7 +103,7 @@ const TextInputBase = (
 
       <View
         style={[
-          //   styles.border,
+          styles.input,
           defineBorderColor,
           isFocused && styles.shadow,
           //{ paddingHorizontal: narrow ? (isIos ? 20 : 8) : 12 },
@@ -115,7 +115,7 @@ const TextInputBase = (
         )}
 
         <MaskInput
-          style={{ marginLeft: narrow ? 0 : 14 }}
+          style={[styles.maskInput, { marginLeft: narrow ? 0 : 14 }]}
           textAlign={narrow ? 'center' : 'left'}
           placeholderTextColor={colors.secondary}
           onFocus={handleOnFocus}
@@ -147,12 +147,14 @@ const TextInputBase = (
       </View>
 
       {error && !noErrorMessage ? (
-        <View>
-          <Text>{/* <Icon name="alert-circle" size={iconsSize} /> */}</Text>
-          <Text>{error}</Text>
+        <View style={styles.errorWrapper}>
+          <Text style={styles.errorIcon}>
+            {/* <Icon name="alert-circle" size={iconsSize} /> */}
+          </Text>
+          <Text style={styles.errorMsg}>{error}</Text>
         </View>
       ) : helper ? (
-        <Text>{helper}</Text>
+        <Text style={styles.helperMsg}>{helper}</Text>
       ) : null}
     </View>
   )
@@ -161,6 +163,26 @@ const TextInputBase = (
 export const TextInput = forwardRef(TextInputBase)
 
 const styles = StyleSheet.create({
+  label: {
+    fontSize: 20,
+    color: '#fff',
+    paddingBottom: 8,
+  },
+  input: {
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    backgroundColor: '#222',
+    height: 48,
+  },
+  maskInput: {
+    flex: 1,
+    color: '#fff',
+    fontSize: 18,
+    lineHeight: 20,
+    marginRight: 8,
+  },
   borderError: {
     borderBottomColor: colors.feedback.error,
     borderLeftColor: colors.feedback.error,
@@ -175,12 +197,29 @@ const styles = StyleSheet.create({
   },
   shadow: {
     elevation: 6,
-    shadowColor: colors.shadow,
-    shadowOffset: {
+    boxShadowColor: colors.shadow,
+    boxShadowOffset: {
       height: 0,
       width: 0,
     },
-    shadowOpacity: 1,
-    shadowRadius: 8,
+    boxShadowOpacity: 1,
+    boxShadowRadius: 8,
+  },
+  errorWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  errorIcon: {
+    color: colors.feedback.error,
+    marginRight: 2,
+  },
+  errorMsg: {
+    color: colors.feedback.error,
+    fontSize: 14,
+  },
+  helperMsg: {
+    color: colors.text,
+    fontSize: 14,
   },
 })
